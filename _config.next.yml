@@ -1,0 +1,180 @@
+# ---------------------------------------------------------------
+# 方案设置
+# ---------------------------------------------------------------
+
+scheme: Gemini
+
+# ---------------------------------------------------------------
+# 站点信息设置
+# ---------------------------------------------------------------
+
+favicon:
+  small: /images/favicon-16x16.png
+  medium: /images/favicon-32x32.png
+  apple_touch_icon: /images/apple-touch-icon.png
+  safari_pinned_tab: /images/logo.svg
+
+# ---------------------------------------------------------------
+# 菜单设置
+# ---------------------------------------------------------------
+
+menu:
+  开始使用:
+    default: /start/ || fa fa-bell
+    Git 的诞生: /born/ || fa fa-dove
+    集中式 VS 分布式: /cvsd/ || fa fa-tags
+    安装 Git: /installation/ || fa fa-download
+  创建版本库: /create-repo/ || fa fa-swatchbook
+  时光穿梭机:
+    default: /time-machine/ || fa fa-plane
+    版本回退: /reset/ || fa fa-backward
+    工作区和暂存区: /was/ || fa fa-network-wired
+    管理修改: /manage-modify/ || fa fa-cogs
+    撤销修改: /cancel-modify/ || fa fa-undo
+    删除文件: /delete/ || fa fa-trash
+  远程仓库:
+    default: /remote-repo/ || fab fa-github
+    添加远程仓库: /add-remote-repo/ || fa fa-globe
+    从远程仓库克隆: /clone-remote-repo/ || fa fa-clone
+    使用 GitHub: /use-github/ || fab fa-github-alt
+    使用 github: /use-github/ || fa fa-qrcode
+  分支管理:
+    default: /branch/ || fa fa-code-branch
+    创建与合并分支: /create-branch/ || fa fa-mountain
+    解决冲突: /resolving-conflicts/ || fa fa-adjust
+    分支管理决策: /manage-branch/ || fa fa-cubes
+    Bug 分支: /bug-branch/ || fa fa-bug
+    Feature 分支: /feature-branch/ || fa fa-fire
+    多人协作: /cooperation/ || fa fa-users
+    Rebase: /rebase/ || fa fa-tree
+  标签管理:
+    default: /tag/ || fa fa-tag
+    创建标签: /create-tag/ || fa fa-plus-square
+    操作标签: /operate-tag/ || fa fa-pen-square
+  自定义 Git:
+    default: /custom/ || fa fa-cog
+    忽略特殊文件: /git-ignore/ || fa fa-file
+    配置别名: /git-alias/ || fa fa-info-circle
+    搭建Git服务器: /git-server/ || fa fa-inbox
+  命令速查表: /cheat-sheet/ || fa fa-file-alt
+
+# ---------------------------------------------------------------
+# 侧边栏设置
+# 参见：https://mopsite.github.io/next/theme-settings/sidebar/
+# ---------------------------------------------------------------
+
+# 侧边栏头像
+avatar:
+  # 设置链接以替换默认图像
+  url: /images/avatar.svg
+  # 如果为 true，头像将显示为圆形
+  rounded: true
+
+# 侧边栏显示文章 / 分类 / 标签
+site_state: false
+
+# 侧边栏链接管理
+links_settings:
+  icon:
+  title:
+  # 链接布局，可用值：block | inline
+  layout: block
+
+links:
+  Hexo: https://mopsite.github.io/hexo
+  NexT: https://mopsite.github.io/next
+  FontAwesome: https://mopsite.github.io/fontawesome
+
+# ---------------------------------------------------------------
+# 页脚设置
+# 参见：https://mopsite.github.io/next/theme-settings/footer/
+# ---------------------------------------------------------------
+
+footer:
+  # 建站年份，如果不设置，则只显示当前年份
+  since: 2021
+
+  # 年份和版权之间的图标
+  icon:
+    # 如果想要动画图标，设置为true
+    animated: true
+
+  # 是否显示强力驱动
+  powered: false
+
+# ---------------------------------------------------------------
+# 其他设置
+# 参见：https://mopsite.github.io/next/theme-settings/miscellaneous/
+# ---------------------------------------------------------------
+
+codeblock:
+  # 代码块高亮主题
+  # 所有可用的主题：https://theme-next.js.org/highlight/
+  theme:
+    light: agate
+    dark: agate
+  # 代码块复制按钮
+  copy_button:
+    enable: true
+    # 可用值：default | flat | mac
+    style: mac
+
+back2top:
+  # 返回顶部按钮中显示滚动百分比
+  scrollpercent: true
+
+# 阅读进度条
+reading_progress:
+  enable: true
+  # 可用值：top | bottom
+  position: bottom
+
+# ---------------------------------------------------------------
+# 第三方插件和服务设置
+# 参见：https://mopsite.github.io/next/third-party-services/
+# 更多插件：https://github.com/next-theme/awesome-next
+# 你可能需要安装相应的依赖包
+# ---------------------------------------------------------------
+
+# 为你的网站提供快速浏览
+# 更多信息：https://github.com/next-theme/pjax
+pjax: true
+
+# FancyBox 是一款用来缩放图片的工具
+# 更多信息：https://fancyapps.com/fancybox/
+fancybox: true
+
+# 盘古之白，用于在中英文之间自动插入空格
+# 更多信息：https://github.com/vinta/pangu.js
+pangu: true
+
+# 快速链接
+# 更多信息：https://getquick.link
+quicklink:
+  enable: true
+
+# ---------------------------------------------------------------
+# 搜索服务
+# ---------------------------------------------------------------
+
+# 本地搜索
+# 依赖包：https://github.com/next-theme/hexo-generator-searchdb
+# 参见：https://mopsite.github.io/next/third-party-services/local-search/
+
+local_search:
+  enable: true
+
+# ---------------------------------------------------------------
+# 标签插件设置
+# 参见：https://mopsite.github.io/next/tag-plugins/
+# ---------------------------------------------------------------
+
+# 便签标签
+note:
+  # 便签标签样式值
+  style: flat
+  icons: true
+
+# 绘图标签
+mermaid:
+  enable: true

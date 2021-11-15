@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/git/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/git/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/git/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/git/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/git/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mopsite.github.io","root":"/git/","images":"/git/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/git/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/git/js/config.js"></script>
+<meta name="description" content="在上一节我们看到了，多人在同一个分支上协作时，很容易出现冲突。即使没有冲突，后 push 的同学不得不先 pull，在本地合并然后才能 push 成功。 每次合并再 push 后，分支变成了这样： $ git log --graph --pretty&#x3D;oneline --abbrev-commit* d1be385 (HEAD -&gt; master, origin&#x2F;master) init h">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rebase">
+<meta property="og:url" content="https://mopsite.github.io/git/branch/rebase/index.html">
+<meta property="og:site_name" content="Git-SCM">
+<meta property="og:description" content="在上一节我们看到了，多人在同一个分支上协作时，很容易出现冲突。即使没有冲突，后 push 的同学不得不先 pull，在本地合并然后才能 push 成功。 每次合并再 push 后，分支变成了这样： $ git log --graph --pretty&#x3D;oneline --abbrev-commit* d1be385 (HEAD -&gt; master, origin&#x2F;master) init h">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-27T10:08:48.000Z">
+<meta property="article:modified_time" content="2021-11-15T17:02:01.590Z">
+<meta property="article:author" content="Git">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mopsite.github.io/git/branch/rebase/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://mopsite.github.io/git/branch/rebase/index.html","path":"branch/rebase/index.html","title":"Rebase"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Rebase | Git-SCM
+</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/git/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/git/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Git-SCM</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        
+            
+  <li class="menu-item menu-item-开始使用"><a href="/git/start/" rel="section"><i class="fa fa-bell fa-fw"></i>开始使用</a></li>
+
+
+      
+        <li class="menu-item menu-item-创建版本库"><a href="/git/create-repo/" rel="section"><i class="fa fa-swatchbook fa-fw"></i>创建版本库</a></li>
+        
+            
+  <li class="menu-item menu-item-时光穿梭机"><a href="/git/time-machine/" rel="section"><i class="fa fa-plane fa-fw"></i>时光穿梭机</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-远程仓库"><a href="/git/remote-repo/" rel="section"><i class="fab fa-github fa-fw"></i>远程仓库</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-分支管理"><a href="/git/branch/" rel="section"><i class="fa fa-code-branch fa-fw"></i>分支管理</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-标签管理"><a href="/git/tag/" rel="section"><i class="fa fa-tag fa-fw"></i>标签管理</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-自定义-git"><a href="/git/custom/" rel="section"><i class="fa fa-cog fa-fw"></i>自定义 Git</a></li>
+
+
+      
+        <li class="menu-item menu-item-命令速查表"><a href="/git/cheat-sheet/" rel="section"><i class="fa fa-file-alt fa-fw"></i>命令速查表</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">1.</span> <span class="nav-text">小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Git"
+      src="/git/images/avatar.svg">
+  <p class="site-author-name" itemprop="name">Git</p>
+  <div class="site-description" itemprop="description">最先进的分布式版本控制系统</div>
+</div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://mopsite.github.io/hexo" title="https:&#x2F;&#x2F;mopsite.github.io&#x2F;hexo">Hexo</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://mopsite.github.io/next" title="https:&#x2F;&#x2F;mopsite.github.io&#x2F;next">NexT</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://mopsite.github.io/fontawesome" title="https:&#x2F;&#x2F;mopsite.github.io&#x2F;fontawesome">FontAwesome</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner page posts-expand">
+  
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+
+        
+        <ul class="sub-menu menu">
+          
+            
+          
+          
+              
+  <li class="menu-item menu-item-创建与合并分支"><a href="/git/branch/create-branch/" rel="section"><i class="fa fa-mountain fa-fw"></i>创建与合并分支</a></li>
+
+
+          
+          
+              
+  <li class="menu-item menu-item-解决冲突"><a href="/git/branch/resolving-conflicts/" rel="section"><i class="fa fa-adjust fa-fw"></i>解决冲突</a></li>
+
+
+          
+          
+              
+  <li class="menu-item menu-item-分支管理决策"><a href="/git/branch/manage-branch/" rel="section"><i class="fa fa-cubes fa-fw"></i>分支管理决策</a></li>
+
+
+          
+          
+              
+  <li class="menu-item menu-item-bug-分支"><a href="/git/branch/bug-branch/" rel="section"><i class="fa fa-bug fa-fw"></i>Bug 分支</a></li>
+
+
+          
+          
+              
+  <li class="menu-item menu-item-feature-分支"><a href="/git/branch/feature-branch/" rel="section"><i class="fa fa-fire fa-fw"></i>Feature 分支</a></li>
+
+
+          
+          
+              
+  <li class="menu-item menu-item-多人协作"><a href="/git/branch/cooperation/" rel="section"><i class="fa fa-users fa-fw"></i>多人协作</a></li>
+
+
+          
+          
+              
+  <li class="menu-item menu-item-rebase"><a href="/git/branch/rebase/" rel="section"><i class="fa fa-tree fa-fw"></i>Rebase</a></li>
+
+
+          
+        </ul>
+        
+
+        
+        
+      
+
+      
+      
+
+      
+      
+  
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">Rebase
+</h1>
+
+<div class="post-meta-container">
+  <ul class="breadcrumb">
+            <li><a href="/git/branch/">BRANCH</a></li>
+          <li>REBASE</li>
+        
+  </ul>
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <p>在上一节我们看到了，多人在同一个分支上协作时，很容易出现冲突。即使没有冲突，后 push 的同学不得不先 pull，在本地合并然后才能 push 成功。</p>
+<p>每次合并再 push 后，分支变成了这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">* d1be385 (HEAD -&gt; master, origin/master) init hello</span><br><span class="line">*   e5e69f1 Merge branch &#x27;dev&#x27;</span><br><span class="line">|\</span><br><span class="line">| *   57c53ab (origin/dev, dev) fix env conflict</span><br><span class="line">| |\</span><br><span class="line">| | * 7a5e5dd add env</span><br><span class="line">| * | 7bd91f1 add new env</span><br><span class="line">| |/</span><br><span class="line">* |   12a631b merged bug fix 101</span><br><span class="line">|\ \</span><br><span class="line">| * | 4c805e2 fix bug 101</span><br><span class="line">|/ /</span><br><span class="line">* |   e1e9c68 merge with no-ff</span><br><span class="line">|\ \</span><br><span class="line">| |/</span><br><span class="line">| * f52c633 add merge</span><br><span class="line">|/</span><br><span class="line">*   cf810e4 conflict fixed</span><br></pre></td></tr></table></figure>
+
+<p>总之看上去很乱，有强迫症的同学会问：为什么 Git 的提交历史不能是一条干净的直线？其实是可以做到的！</p>
+<p>Git 有一种称为 rebase 的操作，有人把它翻译成「变基」。</p>
+<p>先不要随意展开想象。我们还是从实际问题出发，看看怎么把分叉的提交变成直线。</p>
+<p>在和远程分支同步后，我们对 hello.py 这个文件做了两次提交。用<code>git log</code>命令看看：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">* 582d922 (HEAD -&gt; master) add author</span><br><span class="line">* 8875536 add comment</span><br><span class="line">* d1be385 (origin/master) init hello</span><br><span class="line">*   e5e69f1 Merge branch &#x27;dev&#x27;</span><br><span class="line">|\</span><br><span class="line">| *   57c53ab (origin/dev, dev) fix env conflict</span><br><span class="line">| |\</span><br><span class="line">| | * 7a5e5dd add env</span><br><span class="line">| * | 7bd91f1 add new env</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>注意到 Git 用<code>(HEAD -&gt; master)</code>和<code>(origin/master)</code>标识出当前分支的 HEAD 和远程 origin 的位置分别是<code>582d922 add author</code>和<code>d1be385 init hello</code>，本地分支比远程分支快两个提交。</p>
+<p>现在我们尝试推送本地分支：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git push origin master</span><br><span class="line">To github.com:michaelliao/learngit.git</span><br><span class="line"> ! [rejected]        master -&gt; master (fetch first)</span><br><span class="line">error: failed to push some refs to &#x27;git@github.com:michaelliao/learngit.git&#x27;</span><br><span class="line">hint: Updates were rejected because the remote contains work that you do</span><br><span class="line">hint: not have locally. This is usually caused by another repository pushing</span><br><span class="line">hint: to the same ref. You may want to first integrate the remote changes</span><br><span class="line">hint: (e.g., &#x27;git pull ...&#x27;) before pushing again.</span><br><span class="line">hint: See the &#x27;Note about fast-forwards&#x27; in &#x27;git push --help&#x27; for details.</span><br></pre></td></tr></table></figure>
+
+<p>很不幸，失败了，这说明有人先于我们推送了远程分支。按照经验，先 pull 一下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git pull</span><br><span class="line">remote: Counting objects: 3, done.</span><br><span class="line">remote: Compressing objects: 100% (1/1), done.</span><br><span class="line">remote: Total 3 (delta 1), reused 3 (delta 1), pack-reused 0</span><br><span class="line">Unpacking objects: 100% (3/3), done.</span><br><span class="line">From github.com:michaelliao/learngit</span><br><span class="line">   d1be385..f005ed4  master     -&gt; origin/master</span><br><span class="line"> * [new tag]         v1.0       -&gt; v1.0</span><br><span class="line">Auto-merging hello.py</span><br><span class="line">Merge made by the &#x27;recursive&#x27; strategy.</span><br><span class="line"> hello.py | 1 +</span><br><span class="line"> 1 file changed, 1 insertion(+)</span><br></pre></td></tr></table></figure>
+
+<p>再用<code>git status</code>看看状态：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git status</span><br><span class="line">On branch master</span><br><span class="line">Your branch is ahead of &#x27;origin/master&#x27; by 3 commits.</span><br><span class="line">  (use &quot;git push&quot; to publish your local commits)</span><br><span class="line"></span><br><span class="line">nothing to commit, working tree clean</span><br></pre></td></tr></table></figure>
+
+<p>加上刚才合并的提交，现在我们本地分支比远程分支超前 3 个提交。</p>
+<p>用<code>git log</code>看看：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">*   e0ea545 (HEAD -&gt; master) Merge branch &#x27;master&#x27; of github.com:michaelliao/learngit</span><br><span class="line">|\</span><br><span class="line">| * f005ed4 (origin/master) set exit=1</span><br><span class="line">* | 582d922 add author</span><br><span class="line">* | 8875536 add comment</span><br><span class="line">|/</span><br><span class="line">* d1be385 init hello</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>对强迫症同学来说，现在事情有点不对头，提交历史分叉了。如果现在把本地分支 push 到远程，有没有问题？</p>
+<p>有！</p>
+<p>什么问题？</p>
+<p>不好看！</p>
+<p>有没有解决方法？</p>
+<p>有！</p>
+<p>这个时候，rebase 就派上用场了。我们输入命令<code>git rebase</code>试试：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git rebase</span><br><span class="line">First, rewinding head to replay your work on top of it...</span><br><span class="line">Applying: add comment</span><br><span class="line">Using index info to reconstruct a base tree...</span><br><span class="line">M	hello.py</span><br><span class="line">Falling back to patching base and 3-way merge...</span><br><span class="line">Auto-merging hello.py</span><br><span class="line">Applying: add author</span><br><span class="line">Using index info to reconstruct a base tree...</span><br><span class="line">M	hello.py</span><br><span class="line">Falling back to patching base and 3-way merge...</span><br><span class="line">Auto-merging hello.py</span><br></pre></td></tr></table></figure>
+
+<p>输出了一大堆操作，到底是啥效果？再用<code>git log</code>看看：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">* 7e61ed4 (HEAD -&gt; master) add author</span><br><span class="line">* 3611cfe add comment</span><br><span class="line">* f005ed4 (origin/master) set exit=1</span><br><span class="line">* d1be385 init hello</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>原本分叉的提交现在变成一条直线了！这种神奇的操作是怎么实现的？其实原理非常简单。我们注意观察，发现 Git 把我们本地的提交「挪动」了位置，放到了<code>f005ed4 (origin/master) set exit=1</code>之后，这样，整个提交历史就成了一条直线。rebase 操作前后，最终的提交内容是一致的，但是，我们本地的 commit 修改内容哥已经变化了，它们的修改不再基于<code>d1be385 init hello</code>，而是基于<code>f005ed4 (origin/master) set exit=1</code>，但最后的提交<code>7e61ed4</code>内容是一致的。</p>
+<p>这就是 rebase 操作的特点：把分叉的提交历史「整理」成一条直线，看上去更直观。缺点是本地的分叉提交已经被修改过了。</p>
+<p>最后，通过 push 操作把本地分支推送到远程：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Mac:~/learngit michael$ git push origin master</span><br><span class="line">Counting objects: 6, done.</span><br><span class="line">Delta compression using up to 4 threads.</span><br><span class="line">Compressing objects: 100% (5/5), done.</span><br><span class="line">Writing objects: 100% (6/6), 576 bytes | 576.00 KiB/s, done.</span><br><span class="line">Total 6 (delta 2), reused 0 (delta 0)</span><br><span class="line">remote: Resolving deltas: 100% (2/2), completed with 1 local object.</span><br><span class="line">To github.com:michaelliao/learngit.git</span><br><span class="line">   f005ed4..7e61ed4  master -&gt; master</span><br></pre></td></tr></table></figure>
+
+<p>再用<code>git log</code>看看效果：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git log --graph --pretty=oneline --abbrev-commit</span><br><span class="line">* 7e61ed4 (HEAD -&gt; master, origin/master) add author</span><br><span class="line">* 3611cfe add comment</span><br><span class="line">* f005ed4 set exit=1</span><br><span class="line">* d1be385 init hello</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>远程分支的提交历史也是一条直线。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>rebase 操作可以把本地未 push 的分叉提交历史整理成直线；</li>
+<li>rebase 的目的是使得我们在查看历史提交的变化时更容易，因为分叉的提交需要三方对比。</li>
+</ul>
+
+      </div>
+      
+      
+      
+    </div>
+  <ul class="breadcrumb">
+            <li><a href="/git/branch/">BRANCH</a></li>
+          <li>REBASE</li>
+        
+  </ul>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Git</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/git/js/comments.js"></script><script src="/git/js/utils.js"></script><script src="/git/js/motion.js"></script><script src="/git/js/next-boot.js"></script><script src="/git/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/git/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.2/dist/mermaid.min.js","integrity":"sha256-UIQPVkGifpwMvDH5yGgORJ9sSTDq38zz6BGU6dNaKhM="}}</script>
+  <script src="/git/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/git/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://mopsite.github.io/git/branch/rebase/"}</script>
+  <script src="/git/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

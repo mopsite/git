@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/git/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/git/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/git/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/git/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/git/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mopsite.github.io","root":"/git/","images":"/git/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/git/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/git/js/config.js"></script>
+<meta name="description" content="在 远程仓库 一节中，我们讲了远程仓库实际上和本地仓库没啥不同，纯粹为了 7 × 24 小时开机并交换大家的修改。 GitHub 就是一个免费托管开源代码的远程仓库。但是对于某些视源码如生命的商业公司来说，既不想公开源代码，又舍不得给 GitHub 交保护费，那就只能自己搭建一台 Git 服务器作为私有仓库使用。 安装搭建 Git 服务器需要准备一台运行 Linux 的机器，强烈推荐用 Ubunt">
+<meta property="og:type" content="website">
+<meta property="og:title" content="搭建Git服务器">
+<meta property="og:url" content="https://mopsite.github.io/git/custom/git-server/index.html">
+<meta property="og:site_name" content="Git-SCM">
+<meta property="og:description" content="在 远程仓库 一节中，我们讲了远程仓库实际上和本地仓库没啥不同，纯粹为了 7 × 24 小时开机并交换大家的修改。 GitHub 就是一个免费托管开源代码的远程仓库。但是对于某些视源码如生命的商业公司来说，既不想公开源代码，又舍不得给 GitHub 交保护费，那就只能自己搭建一台 Git 服务器作为私有仓库使用。 安装搭建 Git 服务器需要准备一台运行 Linux 的机器，强烈推荐用 Ubunt">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-28T03:52:42.000Z">
+<meta property="article:modified_time" content="2021-11-15T17:02:01.593Z">
+<meta property="article:author" content="Git">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mopsite.github.io/git/custom/git-server/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://mopsite.github.io/git/custom/git-server/index.html","path":"custom/git-server/index.html","title":"搭建Git服务器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>搭建Git服务器 | Git-SCM
+</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/git/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/git/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Git-SCM</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        
+            
+  <li class="menu-item menu-item-开始使用"><a href="/git/start/" rel="section"><i class="fa fa-bell fa-fw"></i>开始使用</a></li>
+
+
+      
+        <li class="menu-item menu-item-创建版本库"><a href="/git/create-repo/" rel="section"><i class="fa fa-swatchbook fa-fw"></i>创建版本库</a></li>
+        
+            
+  <li class="menu-item menu-item-时光穿梭机"><a href="/git/time-machine/" rel="section"><i class="fa fa-plane fa-fw"></i>时光穿梭机</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-远程仓库"><a href="/git/remote-repo/" rel="section"><i class="fab fa-github fa-fw"></i>远程仓库</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-分支管理"><a href="/git/branch/" rel="section"><i class="fa fa-code-branch fa-fw"></i>分支管理</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-标签管理"><a href="/git/tag/" rel="section"><i class="fa fa-tag fa-fw"></i>标签管理</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-自定义-git"><a href="/git/custom/" rel="section"><i class="fa fa-cog fa-fw"></i>自定义 Git</a></li>
+
+
+      
+        <li class="menu-item menu-item-命令速查表"><a href="/git/cheat-sheet/" rel="section"><i class="fa fa-file-alt fa-fw"></i>命令速查表</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E5%85%AC%E9%92%A5"><span class="nav-number">2.</span> <span class="nav-text">管理公钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E7%90%86%E6%9D%83%E9%99%90"><span class="nav-number">3.</span> <span class="nav-text">管理权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">小结</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Git"
+      src="/git/images/avatar.svg">
+  <p class="site-author-name" itemprop="name">Git</p>
+  <div class="site-description" itemprop="description">最先进的分布式版本控制系统</div>
+</div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://mopsite.github.io/hexo" title="https:&#x2F;&#x2F;mopsite.github.io&#x2F;hexo">Hexo</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://mopsite.github.io/next" title="https:&#x2F;&#x2F;mopsite.github.io&#x2F;next">NexT</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://mopsite.github.io/fontawesome" title="https:&#x2F;&#x2F;mopsite.github.io&#x2F;fontawesome">FontAwesome</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner page posts-expand">
+  
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+
+        
+        <ul class="sub-menu menu">
+          
+            
+          
+          
+              
+  <li class="menu-item menu-item-忽略特殊文件"><a href="/git/custom/git-ignore/" rel="section"><i class="fa fa-file fa-fw"></i>忽略特殊文件</a></li>
+
+
+          
+          
+              
+  <li class="menu-item menu-item-配置别名"><a href="/git/custom/git-alias/" rel="section"><i class="fa fa-info-circle fa-fw"></i>配置别名</a></li>
+
+
+          
+          
+              
+  <li class="menu-item menu-item-搭建git服务器"><a href="/git/custom/git-server/" rel="section"><i class="fa fa-inbox fa-fw"></i>搭建Git服务器</a></li>
+
+
+          
+        </ul>
+        
+
+        
+        
+      
+  
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">搭建Git服务器
+</h1>
+
+<div class="post-meta-container">
+  <ul class="breadcrumb">
+            <li><a href="/git/custom/">CUSTOM</a></li>
+          <li>GIT-SERVER</li>
+        
+  </ul>
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <p>在 <a href="../../remote-repo">远程仓库</a> 一节中，我们讲了远程仓库实际上和本地仓库没啥不同，纯粹为了 7 × 24 小时开机并交换大家的修改。</p>
+<p>GitHub 就是一个免费托管开源代码的远程仓库。但是对于某些视源码如生命的商业公司来说，既不想公开源代码，又舍不得给 GitHub 交保护费，那就只能自己搭建一台 Git 服务器作为私有仓库使用。</p>
+<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>搭建 Git 服务器需要准备一台运行 Linux 的机器，强烈推荐用 Ubuntu 或 Debian，这样，通过几条简单的<code>apt</code>命令就可以完成安装。</p>
+<p>假设你已经有 sudo 权限的用户账号，下面正式开始安装。</p>
+<p>第一步，安装 Git：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo apt-get install git</span><br></pre></td></tr></table></figure>
+
+<p>第二步，创建一个 Git 用户，用来运行 Git 服务：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo adduser git</span><br></pre></td></tr></table></figure>
+
+<p>第三步，创建整数登录：</p>
+<p>收集所有需要登录的用户的公钥，就是他们自己的 id_rsa.pub 文件，把所有公钥导入到 /home/git/.ssh/authorized_keys 文件里，一行一个。</p>
+<p>第四步，初始化仓库：</p>
+<p>先选定一个目录作为 Git 仓库，假定是 /srv/sample.git，在 /srv 目录下输入命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo git init --bare sample.git</span><br></pre></td></tr></table></figure>
+
+<p>Git 就会创建一个裸仓库，裸仓库没有工作区，因为服务器上的 Git 仓库纯粹是为了共享，所以不让用户直接登录到服务器上去改工作区，并且服务器上的 Git 仓库通常都以 .git 结尾。然后把 owner 改为 git：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ sudo chown -R git:git sample.git</span><br></pre></td></tr></table></figure>
+
+<p>第五步，禁用 shell 登录：</p>
+<p>出于安全考虑，第二步创建的 Git 用户不允许登录 shell，这可以通过编辑 /etc/passwd 文件文成。找到类似下面的一行：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git:x:1001:1001:,,,:/home/git:/bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>改为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git:x:1001:1001:,,,:/home/git:/usr/bin/git-shell</span><br></pre></td></tr></table></figure>
+
+<p>这样，Git 用户可以正常通过 ssh 使用 Git，但无法登录 shell，因为我们为 Git 用户指定的 git-shell 每次一登录就自动退出。</p>
+<p>第六步，克隆远程仓库：</p>
+<p>现在，可以通过<code>git clone</code>命令克隆远程仓库了，在各自的电脑上运行：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">$ git clone git@server:/srv/sample.git</span><br><span class="line">Cloning into &#x27;sample&#x27;...</span><br><span class="line">warning: You appear to have cloned an empty repository.</span><br></pre></td></tr></table></figure>
+
+<p>剩下的推送就简单了。</p>
+<h3 id="管理公钥"><a href="#管理公钥" class="headerlink" title="管理公钥"></a>管理公钥</h3><p>如果团队很小，把每个人的公钥手机起来放到服务器的 /home/git/.ssh/authorized_keys 文件里就是可行的。如果团队有几百号人，就没法这么玩了，这时，可以用 <a target="_blank" rel="noopener" href="https://github.com/res0nat0r/gitosis">Gitosis</a> 来管理公钥。</p>
+<p>这里就不介绍怎么玩 Gitosis 了，几百号人的团队基本都在 500 强了，相信找个高水平的 Linux 管理员问题不大。</p>
+<h3 id="管理权限"><a href="#管理权限" class="headerlink" title="管理权限"></a>管理权限</h3><p>有很多不但视源码如生命，而且视员工为窃贼的公司，会在版本控制系统里设置一套完善的权限控制，每个人是否有读写权限会精确到每个分支甚至目录下。因为 Git 是为 Linux 源代码托管而开发的，所以 Git 也继承了开源社区的精神，不支持权限控制。不过，因为 Git 支持钩子（hook），所以，可以在服务器端编写一系列脚本来控制提交等操作，达到权限控制的目的。<a target="_blank" rel="noopener" href="https://github.com/sitaramc/gitolite">Gitolite</a> 就是这个工具。</p>
+<p>这里也不介绍 Gitolite 了，不要把有限的生命浪费到权限斗争中。</p>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>搭建 Git 服务器非常简单，通常 10 分钟即可完成；</li>
+<li>要方便管理公钥，用 <a target="_blank" rel="noopener" href="https://github.com/res0nat0r/gitosis">Gitosis</a>；</li>
+<li>要像 SVN 那样变态地控制权限，用 <a target="_blank" rel="noopener" href="https://github.com/sitaramc/gitolite">Gitolite</a>。</li>
+</ul>
+
+      </div>
+      
+      
+      
+    </div>
+  <ul class="breadcrumb">
+            <li><a href="/git/custom/">CUSTOM</a></li>
+          <li>GIT-SERVER</li>
+        
+  </ul>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Git</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/git/js/comments.js"></script><script src="/git/js/utils.js"></script><script src="/git/js/motion.js"></script><script src="/git/js/next-boot.js"></script><script src="/git/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/git/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.2/dist/mermaid.min.js","integrity":"sha256-UIQPVkGifpwMvDH5yGgORJ9sSTDq38zz6BGU6dNaKhM="}}</script>
+  <script src="/git/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/git/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://mopsite.github.io/git/custom/git-server/"}</script>
+  <script src="/git/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

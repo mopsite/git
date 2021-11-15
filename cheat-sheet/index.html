@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/git/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/git/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/git/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/git/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/git/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" integrity="sha256-Vzbj7sDDS/woiFS3uNKo8eIuni59rjyNGtXfstRzStA=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"mopsite.github.io","root":"/git/","images":"/git/images","scheme":"Gemini","darkmode":false,"version":"8.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/git/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/git/js/config.js"></script>
+<meta name="description" content="Git Basics   命令 描述    git init &lt;directory&gt; 在指定的目录下创建一个空的 git repo。不带参数将在当前目录下创建。   git clone &lt;repo&gt; 克隆一个指定 repo 到本地。指定的 repo 可以是本地文件或由 HTTP 或 SSH 指定的远程路径。   git add &lt;directory&gt; 将指定目录">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Git 命令速查表">
+<meta property="og:url" content="https://mopsite.github.io/git/cheat-sheet/index.html">
+<meta property="og:site_name" content="Git-SCM">
+<meta property="og:description" content="Git Basics   命令 描述    git init &lt;directory&gt; 在指定的目录下创建一个空的 git repo。不带参数将在当前目录下创建。   git clone &lt;repo&gt; 克隆一个指定 repo 到本地。指定的 repo 可以是本地文件或由 HTTP 或 SSH 指定的远程路径。   git add &lt;directory&gt; 将指定目录">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-10-26T03:38:53.000Z">
+<meta property="article:modified_time" content="2021-11-15T17:02:01.591Z">
+<meta property="article:author" content="Git">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://mopsite.github.io/git/cheat-sheet/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://mopsite.github.io/git/cheat-sheet/index.html","path":"cheat-sheet/index.html","title":"Git 命令速查表"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Git 命令速查表 | Git-SCM
+</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/git/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/git/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Git-SCM</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        
+            
+  <li class="menu-item menu-item-开始使用"><a href="/git/start/" rel="section"><i class="fa fa-bell fa-fw"></i>开始使用</a></li>
+
+
+      
+        <li class="menu-item menu-item-创建版本库"><a href="/git/create-repo/" rel="section"><i class="fa fa-swatchbook fa-fw"></i>创建版本库</a></li>
+        
+            
+  <li class="menu-item menu-item-时光穿梭机"><a href="/git/time-machine/" rel="section"><i class="fa fa-plane fa-fw"></i>时光穿梭机</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-远程仓库"><a href="/git/remote-repo/" rel="section"><i class="fab fa-github fa-fw"></i>远程仓库</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-分支管理"><a href="/git/branch/" rel="section"><i class="fa fa-code-branch fa-fw"></i>分支管理</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-标签管理"><a href="/git/tag/" rel="section"><i class="fa fa-tag fa-fw"></i>标签管理</a></li>
+
+
+      
+        
+            
+  <li class="menu-item menu-item-自定义-git"><a href="/git/custom/" rel="section"><i class="fa fa-cog fa-fw"></i>自定义 Git</a></li>
+
+
+      
+        <li class="menu-item menu-item-命令速查表"><a href="/git/cheat-sheet/" rel="section"><i class="fa fa-file-alt fa-fw"></i>命令速查表</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Basics"><span class="nav-number">1.</span> <span class="nav-text">Git Basics</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Dff"><span class="nav-number">2.</span> <span class="nav-text">Git Dff</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Undoing-Changes"><span class="nav-number">3.</span> <span class="nav-text">Undoing Changes</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rewrite-Git-History"><span class="nav-number">4.</span> <span class="nav-text">Rewrite Git History</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Branches"><span class="nav-number">5.</span> <span class="nav-text">Git Branches</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Remote-Repositories"><span class="nav-number">6.</span> <span class="nav-text">Remote Repositories</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Config"><span class="nav-number">7.</span> <span class="nav-text">Git Config</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Log"><span class="nav-number">8.</span> <span class="nav-text">Git Log</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Reset"><span class="nav-number">9.</span> <span class="nav-text">Git Reset</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Rebase"><span class="nav-number">10.</span> <span class="nav-text">Git Rebase</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Pull"><span class="nav-number">11.</span> <span class="nav-text">Git Pull</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Git-Push"><span class="nav-number">12.</span> <span class="nav-text">Git Push</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Git"
+      src="/git/images/avatar.svg">
+  <p class="site-author-name" itemprop="name">Git</p>
+  <div class="site-description" itemprop="description">最先进的分布式版本控制系统</div>
+</div>
+
+
+  <div class="links-of-blogroll site-overview-item animated">
+    <div class="links-of-blogroll-title">
+      
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://mopsite.github.io/hexo" title="https:&#x2F;&#x2F;mopsite.github.io&#x2F;hexo">Hexo</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://mopsite.github.io/next" title="https:&#x2F;&#x2F;mopsite.github.io&#x2F;next">NexT</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://mopsite.github.io/fontawesome" title="https:&#x2F;&#x2F;mopsite.github.io&#x2F;fontawesome">FontAwesome</a>
+        </li>
+    </ul>
+  </div>
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner page posts-expand">
+  
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+
+      
+      
+  
+
+
+    
+    
+    
+    <div class="post-block" lang="zh-CN"><header class="post-header">
+
+<h1 class="post-title" itemprop="name headline">Git 命令速查表
+</h1>
+
+<div class="post-meta-container">
+</div>
+
+</header>
+
+      
+      
+      <div class="post-body">
+          <h3 id="Git-Basics"><a href="#Git-Basics" class="headerlink" title="Git Basics"></a>Git Basics</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git init &lt;directory&gt;</td>
+<td>在指定的目录下创建一个空的 git repo。不带参数将在当前目录下创建。</td>
+</tr>
+<tr>
+<td>git clone &lt;repo&gt;</td>
+<td>克隆一个指定 repo 到本地。指定的 repo 可以是本地文件或由 HTTP 或 SSH 指定的远程路径。</td>
+</tr>
+<tr>
+<td>git add &lt;directory&gt;</td>
+<td>将指定目录的所有修改加入到下一次 commit 中。也可以把 directory 替换成 file。</td>
+</tr>
+<tr>
+<td>git commit -m “&lt;message&gt;“</td>
+<td>提交暂存区的修改，使用指定的 message 作为提交信息。</td>
+</tr>
+<tr>
+<td>git status</td>
+<td>显示哪些文件已被 staged、未被 staged 以及未跟踪（untracked）。</td>
+</tr>
+<tr>
+<td>git log</td>
+<td>以缺省格式显示全部 commit 历史。更多自定义参数请参考后续部分。</td>
+</tr>
+</tbody></table>
+<h3 id="Git-Dff"><a href="#Git-Dff" class="headerlink" title="Git Dff"></a>Git Dff</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git diff</td>
+<td>比较工作区和暂存区的修改。</td>
+</tr>
+<tr>
+<td>git diff HEAD</td>
+<td>比较工作区和上次 commit 后的修改。</td>
+</tr>
+<tr>
+<td>git diff --cached</td>
+<td>比较暂存区和上一次 commit 后的修改。</td>
+</tr>
+</tbody></table>
+<h3 id="Undoing-Changes"><a href="#Undoing-Changes" class="headerlink" title="Undoing Changes"></a>Undoing Changes</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git revert &lt;commit&gt;</td>
+<td>对指定 commit 创建一个 undo 的 commit，并应用到当前分支。</td>
+</tr>
+<tr>
+<td>git reset &lt;file&gt;</td>
+<td>将 file 从暂存区移除，但保持工作区不变。此操作不会修改工作区的任何文件。</td>
+</tr>
+</tbody></table>
+<h3 id="Rewrite-Git-History"><a href="#Rewrite-Git-History" class="headerlink" title="Rewrite Git History"></a>Rewrite Git History</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git commit -m &lt;message&gt; --amend</td>
+<td>将当前 staged 修改合并到最近一次的 commit 中。</td>
+</tr>
+<tr>
+<td>git rebase &lt;base&gt;</td>
+<td>基于 base 对当前分支进行 rebase。base 可以是 commit、分支名或tag。</td>
+</tr>
+<tr>
+<td>git reflog</td>
+<td>显示本地 repo 的所有 commit 日志。</td>
+</tr>
+</tbody></table>
+<h3 id="Git-Branches"><a href="#Git-Branches" class="headerlink" title="Git Branches"></a>Git Branches</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git branch</td>
+<td>显示本地 repo 的所有分支。</td>
+</tr>
+<tr>
+<td>git switch -c <branch></td>
+<td>创建并切换到一个新的名为 branch 的分支。不带 -c 参数则为切换分支。</td>
+</tr>
+<tr>
+<td>git merge <branch></td>
+<td>将指定 branch 分支合并到当前分支。</td>
+</tr>
+</tbody></table>
+<h3 id="Remote-Repositories"><a href="#Remote-Repositories" class="headerlink" title="Remote Repositories"></a>Remote Repositories</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git remote add &lt;name&gt; &lt;url&gt;</td>
+<td>添加一个新的远程连接。添加后可用 name 作为指定 url 远程连接的名称。</td>
+</tr>
+<tr>
+<td>git fetch &lt;remote&gt; &lt;branch&gt;</td>
+<td>从指定 remote 抓取指定 branch 的所有 commit 到本地 repo。去掉 branch 抓取所有分支。</td>
+</tr>
+<tr>
+<td>git pull &lt;remote&gt;</td>
+<td>从指定 remote 抓取所有分支的 commit 并立刻合并到本地 repo。</td>
+</tr>
+<tr>
+<td>git push &lt;remote&gt; &lt;branch&gt;</td>
+<td>将本地 branch 推送到指定 remote。如果远程没有对应的分支，将自动在远程创建。</td>
+</tr>
+</tbody></table>
+<h3 id="Git-Config"><a href="#Git-Config" class="headerlink" title="Git Config"></a>Git Config</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git config --global user.name &lt;name&gt;</td>
+<td>配置当前用户名，使用 --global 将针对当前系统登录用户生效。</td>
+</tr>
+<tr>
+<td>git config --global user.email &lt;email&gt;</td>
+<td>配置当前用户邮箱地址。</td>
+</tr>
+<tr>
+<td>git config --global alias.&lt;alias-name&gt; &lt;git-command&gt;</td>
+<td>配置一个 git 命令的快捷方式。</td>
+</tr>
+<tr>
+<td>git config --system core.editor &lt;editor&gt;</td>
+<td>配置文本编辑器，例如 vi，在必要时自动打开此编辑器。</td>
+</tr>
+<tr>
+<td>git config --global -edit</td>
+<td>打开当前用户的 git 全局配置并编辑。</td>
+</tr>
+</tbody></table>
+<h3 id="Git-Log"><a href="#Git-Log" class="headerlink" title="Git Log"></a>Git Log</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git log -&lt;limit&gt;</td>
+<td>限制 log 的显示数量。例如 git log -5 仅显示最新 5 条 commit。</td>
+</tr>
+<tr>
+<td>git log --oneline</td>
+<td>每行显示一条 commit。</td>
+</tr>
+<tr>
+<td>git log --author=”&lt;pattern&gt;“</td>
+<td>按提交者名字搜索并显示 commit。</td>
+</tr>
+<tr>
+<td>git log --grep=”&lt;pattern&gt;“</td>
+<td>按指定内容搜索并显示 commit。</td>
+</tr>
+<tr>
+<td>git log &lt;since&gt;..&lt;until&gt;</td>
+<td>显示指定范围的 commit。范围参数可以是 commit ID、分支名、HEAD 或任意相对位置。</td>
+</tr>
+<tr>
+<td>git log -- &lt;file&gt;</td>
+<td>仅显示包含指定文件修改的 commit。</td>
+</tr>
+<tr>
+<td>git log --graph</td>
+<td>使用 --graph 参数显示图形化的 branch 信息。</td>
+</tr>
+</tbody></table>
+<h3 id="Git-Reset"><a href="#Git-Reset" class="headerlink" title="Git Reset"></a>Git Reset</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git reset</td>
+<td>移除所有暂存区的修改，但不会修改工作区。</td>
+</tr>
+<tr>
+<td>git reset --hard</td>
+<td>移除所有暂存区的修改，并强制删除所有工作区的修改</td>
+</tr>
+<tr>
+<td>git reset &lt;commit&gt;</td>
+<td>将当前分支回滚到指定 commit，清除暂存区的修改，但保持工作区状态不变。</td>
+</tr>
+<tr>
+<td>git reset --hard &lt;commit&gt;</td>
+<td>将当前分支回滚到指定 commit，清除暂存区的修改，并强制删除所有工作区的修改。</td>
+</tr>
+</tbody></table>
+<h3 id="Git-Rebase"><a href="#Git-Rebase" class="headerlink" title="Git Rebase"></a>Git Rebase</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git rebase -i &lt;base&gt;</td>
+<td>以交互模式对当前分支做 rebase。</td>
+</tr>
+</tbody></table>
+<h3 id="Git-Pull"><a href="#Git-Pull" class="headerlink" title="Git Pull"></a>Git Pull</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git pull --rebase &lt;remote&gt;</td>
+<td>抓取所有远程分支，并以 rebase 模式并入本地 repo 而不是 merge。</td>
+</tr>
+</tbody></table>
+<h3 id="Git-Push"><a href="#Git-Push" class="headerlink" title="Git Push"></a>Git Push</h3><table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>git push &lt;remote&gt; --force</td>
+<td>将本地分支推送到远程。不要使用 --force 参数，除非你完全明白此操作的后果。</td>
+</tr>
+<tr>
+<td>git push &lt;remote&gt; --tag</td>
+<td>--tag 参数会将所有本地 tag 推送到远程。</td>
+</tr>
+</tbody></table>
+
+      </div>
+      
+      
+      
+    </div>
+
+    
+    
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Git</span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@next-theme/pjax@0.5.0/pjax.min.js" integrity="sha256-3NkoLDrmHLTYj7csHIZSr0MHAFTXth7Ua/DDt4MRUAg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js" integrity="sha256-yt2kYMy0w8AbtF89WXb2P1rfjcP/HTHLT7097U8Y5b8=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/pangu@4.0.7/dist/browser/pangu.min.js" integrity="sha256-j+yj56cdEY2CwkVtGyz18fNybFGpMGJ8JxG3GSyO2+I=" crossorigin="anonymous"></script>
+<script src="/git/js/comments.js"></script><script src="/git/js/utils.js"></script><script src="/git/js/motion.js"></script><script src="/git/js/next-boot.js"></script><script src="/git/js/pjax.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/git/js/third-party/search/local-search.js"></script>
+
+
+  <script class="next-config" data-name="mermaid" type="application/json">{"enable":true,"theme":{"light":"default","dark":"dark"},"js":{"url":"https://cdn.jsdelivr.net/npm/mermaid@8.13.2/dist/mermaid.min.js","integrity":"sha256-UIQPVkGifpwMvDH5yGgORJ9sSTDq38zz6BGU6dNaKhM="}}</script>
+  <script src="/git/js/third-party/tags/mermaid.js"></script>
+
+  <script src="/git/js/third-party/fancybox.js"></script>
+
+
+  
+
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/quicklink@2.2.0/dist/quicklink.umd.js" integrity="sha256-4kQf9z5ntdQrzsBC3YSHnEz02Z9C1UeW/E9OgnvlzSY=" crossorigin="anonymous"></script>
+  <script class="next-config" data-name="quicklink" type="application/json">{"enable":true,"home":false,"archive":false,"delay":true,"timeout":3000,"priority":true,"url":"https://mopsite.github.io/git/cheat-sheet/"}</script>
+  <script src="/git/js/third-party/quicklink.js"></script>
+
+</body>
+</html>

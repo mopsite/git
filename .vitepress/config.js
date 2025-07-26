@@ -1,7 +1,9 @@
 import { defineConfig } from 'vitepress'
 
+const baseURL = process.env.BASE_URL || '/git/'
+
 export default defineConfig({
-  base: process.env.BASE_URL || '/git/',
+  base: baseURL,
   title: 'Git-SCM',
   description: '世上最浅显易懂的 Git 教程',
   head: [
@@ -9,7 +11,7 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
-        href: `${process.env.BASE_URL || '/git/'}logo.svg`
+        href: `${baseURL}logo.svg`
       }
     ]
   ],

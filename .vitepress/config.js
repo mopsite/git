@@ -9,7 +9,7 @@ export default defineConfig({
       'link',
       {
         rel: 'icon',
-        href: '/git/logo.svg'
+        href: `${process.env.BASE_URL || '/git/'}logo.svg`
       }
     ]
   ],
